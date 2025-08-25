@@ -1,0 +1,8 @@
+# CVP connection vars
+ansible_user: cvpadmin
+ansible_password: adminadmin
+ansible_connection: httpapi
+ansible_network_os: eos
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_httpapi_port: 443

@@ -1,0 +1,13 @@
+---
+- name: CVP Connectivity Test
+  hosts: CLOUDVISION
+  gather_facts: false
+
+  tasks:
+    - name: Gather CVP device facts
+      arista.cvp.cv_facts_v3:
+        facts:
+          - devices
+      register: cvp_facts
+
+# We need root container in container hierarchy

@@ -1,0 +1,50 @@
+---
+all:
+  children:
+    FABRIC:
+      children:
+        SPINES:
+          hosts:
+            Spine1:
+              ansible_host: 172.20.20.72
+            Spine2:
+              ansible_host: 172.20.20.66
+        LEAFS:
+          children:
+            LEAFS_POD1:
+              hosts:
+                Leaf1:
+                  ansible_host: 172.20.20.69
+                Leaf2:
+                  ansible_host: 172.20.20.65
+            LEAFS_POD2:
+              hosts:
+                Leaf3:
+                  ansible_host: 172.20.20.73
+                Leaf4:
+                  ansible_host: 172.20.20.68
+            LEAFS_POD3:
+              hosts:
+                Leaf5:
+                  ansible_host: 172.20.20.71
+                Leaf6:
+                  ansible_host: 172.20.20.63
+        HOSTS:
+          hosts:
+            Host-A:
+              ansible_host: 172.20.20.70
+            Host-B:
+              ansible_host: 172.20.20.74
+            Host-C:
+              ansible_host: 172.20.20.61
+            Host-D:
+              ansible_host: 172.20.20.67
+            Host-E:
+              ansible_host: 172.20.20.62
+            Host-F:
+              ansible_host: 172.20.20.64
+    CLOUDVISION:
+      hosts:
+        cvp: 
+          ansible_host: 10.243.248.48
+

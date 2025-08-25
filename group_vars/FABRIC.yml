@@ -1,0 +1,174 @@
+# EOS connection vars
+ansible_user: admin
+ansible_password: admin
+ansible_network_os: eos
+ansible_connection: httpapi
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_httpapi_port: 443
+ansible_become: true
+ansible_become_method: enable
+
+# Common AVD group variables
+fabric_name: FABRIC
+
+# p2p unlinks mtu for cEOS
+p2p_uplinks_mtu: 1500
+
+# Local user configuration
+local_users:
+  - name: admin
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$D6X/0n0DCU8E8ut8$2ZVNvYRrdHZieTLaJ4BnNOQD.FlrdzHAx0dkQapUN0FZpjpewlCSGDiF7.m8.q48CAke72NDGo1vpm0eZEclE."
+
+# Multi-agent routing protocol
+service_routing_protocols_model: multi-agent
+
+# Default STP flavor as MSTP
+custom_structured_configuration_spanning_tree:
+  mode: mstp
+
+# Enable ip routing
+ip_routing: true
+
+# OOB MGMT Settings
+mgmt_interface: Management0
+mgmt_gateway: 172.20.20.1
+mgmt_interface_vrf: default
+
+# eAPI
+management_eapi:
+  enable_http: true
+  enable_https: true
+
+eos_cli: |
+  !
+  daemon TerminAttr
+     exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+     no shutdown
+  !
+  system l1
+     unsupported speed action error
+     unsupported error-correction action error
+  !
+
+# Define underlay & overlay routing protocol
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+# BGP Defaults
+bgp_default_ipv4_unicast: false
+bgp_distance:
+  external_routes: 20
+  internal_routes: 200
+  local_routes: 200
+bgp_update_wait_install: false
+bgp_update_wait_for_convergence: false
+
+# Spine switch group
+spine:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: cEOS-LAB
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.0.0/27
+    # BGP ASN
+    bgp_as: 65100
+    # Definition of nodes contained in this group.
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+    - name: Spine1
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 172.20.20.72/24
+    
+    - name: Spine2
+      id: 2
+      mgmt_ip: 172.20.20.66/24
+
+# L3 Leaf switch group
+l3leaf:
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: cEOS-LAB
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.0.0/27
+    # Offset all assigned loopback IP addresses.
+    # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+    # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+    loopback_ipv4_offset: 2
+    # Definition of pool of IPs to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
+    vtep_loopback_ipv4_pool: 192.168.1.0/27
+    # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
+    uplink_switches:
+      - Spine1
+      - Spine2
+    uplink_interfaces:
+      - Ethernet1
+      - Ethernet2
+    mlag_interfaces:
+      - Ethernet3
+      - Ethernet4
+    # Definition of pool of IPs to be used in P2P links
+    uplink_ipv4_pool: 10.255.255.0/26
+    # Definition of pool of IPs to be used for MLAG peer-link connectivity
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    # iBGP Peering between MLAG peers
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    # Virtual router mac for VNIs assigned to Leaf switches in format xx:xx:xx:xx:xx:xx
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+
+  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
+  node_groups:
+    # Definition of a node group that will include two devices in MLAG.
+    # Definitions under the group will be inherited by both nodes in the group
+    - group: LEAFS_POD1
+      # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+      bgp_as: 65001
+      filter:
+        tenants:
+          - CUSTOMER_A
+        tags:
+          - pod1
+      nodes:
+        - name: Leaf1
+          id: 1
+          mgmt_ip: 172.20.20.69/24
+          # Definition of the port to be used in the uplink device facing this device.
+          # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+          uplink_switch_interfaces:
+            - Ethernet1
+            - Ethernet1
+        - name: Leaf2
+          id: 2
+          mgmt_ip: 172.20.20.65/24
+          uplink_switch_interfaces:
+            - Ethernet2
+            - Ethernet2
+    - group: LEAFS_POD2
+      bgp_as: 65002
+      filter:
+        tenants:
+          - CUSTOMER_A
+        tags:
+          - pod2
+      nodes:
+        - name: Leaf3
+          id: 3
+          mgmt_ip: 172.20.20.73/24
+          uplink_switch_interfaces:
+            - Ethernet3
+            - Ethernet3
+        - name: Leaf4
+          id: 4
+          mgmt_ip: 172.20.20.68/24
+          uplink_switch_interfaces:
+            - Ethernet4
+            - Ethernet4
+
+
+#### EVPN Multihoming will be added for Leaf5 and Leaf6
