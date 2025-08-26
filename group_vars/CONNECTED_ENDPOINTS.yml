@@ -1,33 +1,31 @@
----
-port_profiles:
-  - profile: pod1_servers
-    mode: trunk
-    vlans: 11,12
-  - profile: pod2_servers
-    mode: trunk
-    vlans: 21,22
-  - profile: pod3_servers
-    mode: trunk
-    vlans: 31,32
+# ---
+# port_profiles:
+#   - profile: pod1_servers
+#     mode: trunk
+#     vlans: 11,12
+#   - profile: pod2_servers
+#     mode: trunk
+#     vlans: 21,22
+#   - profile: pod3_servers
+#     mode: trunk
+#     vlans: 31,32
 
 # Definition of connected endpoints in the fabric.
 servers:
   - name: Host-A
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports:
-          - Ethernet1
-          - Ethernet2
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
-        switch_ports:
-          - Ethernet5
-          - Ethernet5
+        switch_ports: [Ethernet5, Ethernet5]
         # Switch names where the server ports are connected.
-        switches:
-          - Leaf1
-          - Leaf2
+        switches: [Leaf1, Leaf2]
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod1_servers
         # Definition of the pair of ports as port channel.
         port_channel:
           description: MLAG_PortChannel
@@ -35,19 +33,17 @@ servers:
   - name: Host-B
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports:
-          - Ethernet1
-          - Ethernet2
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
-        switch_ports:
-          - Ethernet6
-          - Ethernet6
+        switch_ports: [Ethernet6, Ethernet6]
         # Switch names where the server ports are connected.
-        switches:
-          - Leaf1
-          - Leaf2
+        switches: [Leaf1, Leaf2]
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod1_servers
         # Definition of the pair of ports as port channel.
         port_channel:
           description: MLAG_PortChannel
@@ -55,19 +51,17 @@ servers:
   - name: Host-C
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports:
-          - Ethernet1
-          - Ethernet2
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
-        switch_ports:
-          - Ethernet5
-          - Ethernet5
+        switch_ports: [Ethernet5, Ethernet5]
         # Switch names where the server ports are connected.
-        switches:
-          - Leaf3
-          - Leaf4
+        switches: [Leaf3, Leaf4]
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod2_servers
         # Definition of the pair of ports as port channel.
         port_channel:
           description: MLAG_PortChannel
@@ -75,56 +69,60 @@ servers:
   - name: Host-D
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports:
-          - Ethernet1
-          - Ethernet2
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
-        switch_ports:
-          - Ethernet6
-          - Ethernet6
+        switch_ports: [Ethernet6, Ethernet6]
         # Switch names where the server ports are connected.
-        switches:
-          - Leaf3
-          - Leaf4
+        switches: [Leaf3, Leaf4]
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod2_servers
         # Definition of the pair of ports as port channel.
         port_channel:
           description: MLAG_PortChannel
           mode: active
   - name: Host-E
     adapters:
-      - endpoint_ports:
-          - Ethernet1        
-          - Ethernet2        
-        switch_ports:
-          - Ethernet5
-          - Ethernet5
-        switches:
-          - Leaf5            
-          - Leaf6            
+        # Name of the server interfaces that will be used in the description of each interface
+      - endpoint_ports: [Ethernet1, Ethernet2]     
+        # Switch interfaces where the server ports are connected.
+        switch_ports: [Ethernet5, Ethernet5]
+        # Switch names where the server ports are connected.
+        switches: [Leaf5, Leaf6]      
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod3_servers
-        evpn_multihoming: true          
-        port_channel:                   
+        # EVPN Multihoming ports
+        # evpn_multihoming: true          
+        # Definition of the pair of ports as port channel.
+        port_channel:                  
           description: EVPN_AA_PortChannel
           mode: active                 
-          #short_esi: "0000:0000:0001" # (optional) set if you want a fixed ESI
+          #short_esi: "0000:0000:0001" 
   - name: Host-F
     adapters:
-      - endpoint_ports:
-          - Ethernet1        
-          - Ethernet2       
-        switch_ports:
-          - Ethernet6
-          - Ethernet6
-        switches:
-          - Leaf5           
-          - Leaf6           
+        # Name of the server interfaces that will be used in the description of each interface
+      - endpoint_ports: [Ethernet1, Ethernet2]     
+        # Switch interfaces where the server ports are connected.
+        switch_ports: [Ethernet6, Ethernet6]
+        # Switch names where the server ports are connected.
+        switches: [Leaf5, Leaf6]      
+        # VLANs that will be configured on these ports.
+        vlans: 10,20
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        profile: pod3_servers
-        evpn_multihoming: true
-        port_channel:
+        # EVPN Multihoming ports
+        # evpn_multihoming: true          
+        # Definition of the pair of ports as port channel.
+        port_channel:                  
           description: EVPN_AA_PortChannel
-          mode: active
+          mode: active                 
           #short_esi: "0000:0000:0002"

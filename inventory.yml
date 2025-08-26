@@ -29,22 +29,28 @@ all:
                   ansible_host: 172.20.20.71
                 Leaf6:
                   ansible_host: 172.20.20.63
-        HOSTS:
-          hosts:
-            Host-A:
-              ansible_host: 172.20.20.70
-            Host-B:
-              ansible_host: 172.20.20.74
-            Host-C:
-              ansible_host: 172.20.20.61
-            Host-D:
-              ansible_host: 172.20.20.67
-            Host-E:
-              ansible_host: 172.20.20.62
-            Host-F:
-              ansible_host: 172.20.20.64
+    HOSTS:
+      hosts:
+        Host-A:
+          ansible_host: 172.20.20.70
+        Host-B:
+          ansible_host: 172.20.20.74
+        Host-C:
+          ansible_host: 172.20.20.61
+        Host-D:
+          ansible_host: 172.20.20.67
+        Host-E:
+          ansible_host: 172.20.20.62
+        Host-F:
+          ansible_host: 172.20.20.64
     CLOUDVISION:
       hosts:
         cvp: 
           ansible_host: 10.243.248.48
+    NETWORK_SERVICES:
+      children:
+        LEAFS:
+    CONNECTED_ENDPOINTS:
+      children:
+        LEAFS:
 

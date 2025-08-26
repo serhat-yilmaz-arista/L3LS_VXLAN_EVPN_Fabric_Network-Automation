@@ -66,6 +66,9 @@ bgp_distance:
 bgp_update_wait_install: false
 bgp_update_wait_for_convergence: false
 
+# evpn_multihoming_mode: all-active
+# evpn_esi_prefix_default: "0000:0000:0000"   # AVD/template may concatenate suffix per host if required
+
 # Spine switch group
 spine:
   # Definition of default values that will be configured to all nodes defined in this group
@@ -169,6 +172,51 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet4
             - Ethernet4
+    - group: LEAFS_POD3
+      vtep_loopback_ipv4_pool: 192.168.2.0/27
+      filter:
+        tenants:
+          - CUSTOMER_A
+        tags:
+          - pod3
+      nodes:
+        - name: Leaf5
+          id: 5
+          mgmt_ip: 172.20.20.71/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet5
+          bgp_as: 65005
+        - name: Leaf6
+          id: 6
+          mgmt_ip: 172.20.20.63/24
+          uplink_switch_interfaces:
+            - Ethernet6
+            - Ethernet6
+          bgp_as: 65006
+ 
 
 
-#### EVPN Multihoming will be added for Leaf5 and Leaf6
+
+
+
+#   # ----------------------------
+#   # POD3: Leaf5 and Leaf6 — **ADDED AS STANDALONE NODES** (do NOT go into node_groups)
+#   # They must remain independent (no MLAG) for EVPN Active-Active multihoming.
+#   # Each will advertise the same ESI in EVPN for connected servers (Host-E/Host-F)
+#   # ----------------------------
+#   nodes:
+#     - name: Leaf5
+#       id: 5
+#       mgmt_ip: 172.20.20.71/24
+#       # uplinks to spines: configure as appropriate (these are examples)
+#       uplink_switch_interfaces:
+#         - Ethernet1
+#         - Ethernet2
+#     - name: Leaf6
+#       id: 6
+#       mgmt_ip: 172.20.20.63/24
+#       uplink_switch_interfaces:
+#         - Ethernet1
+#         - Ethernet2
+# #### EVPN Multihoming will be added for Leaf5 and Leaf6
