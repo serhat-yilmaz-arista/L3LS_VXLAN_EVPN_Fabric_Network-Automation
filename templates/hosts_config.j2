@@ -1,0 +1,37 @@
+{# Expecting data under hosts_map[inventory_hostname] #}
+{% set h = hosts_map[inventory_hostname] %}
+!
+{% for vlan in h.vlans %}
+vlan {{ vlan.id }}
+{% endfor %}
+!
+{% for pc in h.port_channels %}
+interface Port-Channel{{ pc.id }}
+   description From_{{ inventory_hostname }}_to_{{ h.port_channels[0].connected_leaf | join('&') }}
+   switchport
+   switchport mode access
+{%     for vlan in h.vlans %}
+   switchport access vlan {{ vlan.id }}
+{%     endfor %}
+   no shutdown
+!
+{%     for ifname in pc.interfaces %}
+interface {{ ifname }}
+   channel-group {{ pc.id }} mode active
+   no shutdown
+{%     endfor %}
+{% endfor %}
+!
+{% for vlan in h.vlans %}
+interface Vlan{{ vlan.id }}
+   no autostate
+   ip address {{ vlan.svi_ip }}
+{% endfor %}
+!
+ip routing
+!
+{% for vlan in h.vlans %}
+{%     for pfx in h.static_routes %}
+ip route {{ pfx }} {{ vlan.gateway }}
+{%     endfor %}
+{% endfor %}

@@ -1,0 +1,25 @@
+---
+- name: Configure Connected Endpoints
+  hosts: HOSTS
+  gather_facts: false
+  tasks:
+    - name: Ensure host_configs directory exists
+      ansible.builtin.file:
+        path: "./host_configs"
+        state: directory
+        mode: '0755' 
+      run_once: true
+
+    - name: Build hosts config from template for {{ inventory_hostname }}
+      ansible.builtin.template:
+        src: ../templates/hosts_config.j2
+        dest: "./host_configs/{{ inventory_hostname }}.cfg"
+
+    # - name: Push rendered Host config to {{ inventory_hostname }}
+    #   arista.eos.eos_config:
+    #     src: "./host_configs/{{ inventory_hostname }}.cfg"
+    #   register: config_result
+
+    # - name: Display status of configuration push for {{ inventory_hostname }}
+    #   ansible.builtin.debug:
+    #     msg: "Configuration status for {{ inventory_hostname }}: {{ 'changed' if config_result.changed else 'ok' }}"

@@ -11,3 +11,4 @@
       register: cvp_facts
 
 # We need root container in container hierarchy
+# I can record when I use arista.cvp role to create containers in CVP
