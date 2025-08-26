@@ -51,6 +51,7 @@ ethernet_interfaces:
   peer: Host-C
   peer_interface: Ethernet2
   peer_type: server
+  port_profile: Pod2_Host-C
 - name: Ethernet6
   description: SERVER_Host-D_Ethernet2
   shutdown: false
@@ -60,6 +61,7 @@ ethernet_interfaces:
   peer: Host-D
   peer_interface: Ethernet2
   peer_type: server
+  port_profile: Pod2_Host-D
 hostname: Leaf4
 ip_igmp_snooping:
   globally_enabled: true
@@ -81,9 +83,9 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.1.5/32
 - name: Loopback10
-  description: DIAG_VRF_VRF_10
+  description: DIAG_VRF_VRF_A
   shutdown: false
-  vrf: VRF_10
+  vrf: VRF_A
   ip_address: 10.255.10.6/32
 management_api_http:
   enable_http: true
@@ -127,7 +129,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 10,20
+      allowed_vlan: '21'
 - name: Port-Channel6
   description: MLAG_PortChannel
   shutdown: false
@@ -137,7 +139,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 10,20
+      allowed_vlan: '22'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -268,7 +270,7 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
-  - name: VRF_10
+  - name: VRF_A
     rd: 10.255.0.6:10
     route_targets:
       import:
@@ -298,7 +300,7 @@ static_routes:
   next_hop: 172.20.20.1
 transceiver_qsfp_default_mode_4x10: true
 virtual_source_nat_vrfs:
-- name: VRF_10
+- name: VRF_A
   ip_address: 10.255.10.6
 vlan_interfaces:
 - name: Vlan4093
@@ -313,25 +315,25 @@ vlan_interfaces:
   mtu: 1500
   no_autostate: true
 - name: Vlan21
-  description: VRF_10_VLAN_21
+  description: VRF_A_VLAN_21
   shutdown: false
-  vrf: VRF_10
-  ip_address_virtual: 10.10.21.1/24
+  vrf: VRF_A
+  ip_address_virtual: 10.10.21.254/24
   tenant: CUSTOMER_A
   tags:
   - pod2
 - name: Vlan22
-  description: VRF_10_VLAN_22
+  description: VRF_A_VLAN_22
   shutdown: false
-  vrf: VRF_10
-  ip_address_virtual: 10.10.22.1/24
+  vrf: VRF_A
+  ip_address_virtual: 10.10.22.254/24
   tenant: CUSTOMER_A
   tags:
   - pod2
 - name: Vlan3009
-  description: MLAG_L3_VRF_VRF_10
+  description: MLAG_L3_VRF_VRF_A
   shutdown: false
-  vrf: VRF_10
+  vrf: VRF_A
   ip_address: 10.255.1.101/31
   mtu: 1500
   tenant: CUSTOMER_A
@@ -353,20 +355,20 @@ vlans:
   - MLAG
   tenant: system
 - id: 21
-  name: VRF_10_VLAN_21
+  name: VRF_A_VLAN_21
   tenant: CUSTOMER_A
 - id: 22
-  name: VRF_10_VLAN_22
+  name: VRF_A_VLAN_22
   tenant: CUSTOMER_A
 - id: 3009
-  name: MLAG_L3_VRF_VRF_10
+  name: MLAG_L3_VRF_VRF_A
   trunk_groups:
   - MLAG
   tenant: CUSTOMER_A
 vrfs:
 - name: default
   ip_routing: false
-- name: VRF_10
+- name: VRF_A
   ip_routing: true
   tenant: CUSTOMER_A
 vxlan_interface:
@@ -382,5 +384,5 @@ vxlan_interface:
       - id: 22
         vni: 10022
       vrfs:
-      - name: VRF_10
+      - name: VRF_A
         vni: 10

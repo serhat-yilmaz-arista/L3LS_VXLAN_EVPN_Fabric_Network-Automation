@@ -3,6 +3,12 @@
   hosts: FABRIC
   gather_facts: false
   tasks:
+
+    # - name: Generate EOS configuration Snapshots
+    #   tags: [snapshot]
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.eos_snapshot 
+
     - name: Generate AVD Structured Configurations and Fabric Documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_designs

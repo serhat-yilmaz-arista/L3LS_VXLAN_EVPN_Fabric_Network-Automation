@@ -51,8 +51,6 @@
 | l3leaf | Leaf4 | Ethernet2 | spine | Spine2 | Ethernet4 |
 | l3leaf | Leaf5 | Ethernet1 | spine | Spine1 | Ethernet5 |
 | l3leaf | Leaf5 | Ethernet2 | spine | Spine2 | Ethernet5 |
-| l3leaf | Leaf5 | Ethernet3 | mlag_peer | Leaf6 | Ethernet3 |
-| l3leaf | Leaf5 | Ethernet4 | mlag_peer | Leaf6 | Ethernet4 |
 | l3leaf | Leaf6 | Ethernet1 | spine | Spine1 | Ethernet6 |
 | l3leaf | Leaf6 | Ethernet2 | spine | Spine2 | Ethernet6 |
 
@@ -104,8 +102,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.1.0/27 | 32 | 4 | 12.5 % |
-| 192.168.2.0/27 | 32 | 2 | 6.25 % |
+| 192.168.1.0/27 | 32 | 6 | 18.75 % |
 
 ### VTEP Loopback Node allocation
 
@@ -115,5 +112,5 @@
 | FABRIC | Leaf2 | 192.168.1.3/32 |
 | FABRIC | Leaf3 | 192.168.1.5/32 |
 | FABRIC | Leaf4 | 192.168.1.5/32 |
-| FABRIC | Leaf5 | 192.168.2.7/32 |
-| FABRIC | Leaf6 | 192.168.2.7/32 |
+| FABRIC | Leaf5 | 192.168.1.7/32 |
+| FABRIC | Leaf6 | 192.168.1.8/32 |

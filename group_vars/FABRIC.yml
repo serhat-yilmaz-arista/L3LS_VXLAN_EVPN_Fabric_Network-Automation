@@ -57,6 +57,19 @@ eos_cli: |
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+# evpn_vlan_aware_bundles: true 
+
+
+# bgp_peer_groups: 
+#   ipv4_underlay_peers:
+#     password: "AQQvKeimxJu+uGQ/yYvv9w=="
+#   evpn_overlay_peers:
+#       password: "q+VNViP5i4rVjW1cxFv2wA=="
+#   mlag_ipv4_underlay_peer:
+#       password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+
+
 # BGP Defaults
 bgp_default_ipv4_unicast: false
 bgp_distance:
@@ -65,9 +78,6 @@ bgp_distance:
   local_routes: 200
 bgp_update_wait_install: false
 bgp_update_wait_for_convergence: false
-
-# evpn_multihoming_mode: all-active
-# evpn_esi_prefix_default: "0000:0000:0000"   # AVD/template may concatenate suffix per host if required
 
 # Spine switch group
 spine:
@@ -87,7 +97,6 @@ spine:
       id: 1
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.20.20.72/24
-    
     - name: Spine2
       id: 2
       mgmt_ip: 172.20.20.66/24
@@ -173,7 +182,7 @@ l3leaf:
             - Ethernet4
             - Ethernet4
     - group: LEAFS_POD3
-      vtep_loopback_ipv4_pool: 192.168.2.0/27
+      mlag: false
       filter:
         tenants:
           - CUSTOMER_A
@@ -194,29 +203,3 @@ l3leaf:
             - Ethernet6
             - Ethernet6
           bgp_as: 65006
- 
-
-
-
-
-
-#   # ----------------------------
-#   # POD3: Leaf5 and Leaf6 — **ADDED AS STANDALONE NODES** (do NOT go into node_groups)
-#   # They must remain independent (no MLAG) for EVPN Active-Active multihoming.
-#   # Each will advertise the same ESI in EVPN for connected servers (Host-E/Host-F)
-#   # ----------------------------
-#   nodes:
-#     - name: Leaf5
-#       id: 5
-#       mgmt_ip: 172.20.20.71/24
-#       # uplinks to spines: configure as appropriate (these are examples)
-#       uplink_switch_interfaces:
-#         - Ethernet1
-#         - Ethernet2
-#     - name: Leaf6
-#       id: 6
-#       mgmt_ip: 172.20.20.63/24
-#       uplink_switch_interfaces:
-#         - Ethernet1
-#         - Ethernet2
-# #### EVPN Multihoming will be added for Leaf5 and Leaf6

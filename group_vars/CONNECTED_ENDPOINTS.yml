@@ -1,3 +1,5 @@
+
+### Used VLANs will be decided (VLAN 10-20 or VLAN 11, 12, 21, 22, 31, 32)
 # ---
 # port_profiles:
 #   - profile: pod1_servers
@@ -10,6 +12,27 @@
 #     mode: trunk
 #     vlans: 31,32
 
+---
+port_profiles:
+  - profile: Pod1_Host-A
+    mode: trunk
+    vlans: '11'
+  - profile: Pod1_Host-B
+    mode: trunk
+    vlans: '12'
+  - profile: Pod2_Host-C
+    mode: trunk
+    vlans: '21'
+  - profile: Pod2_Host-D
+    mode: trunk
+    vlans: '22'
+  - profile: Pod3_Host-E
+    mode: trunk
+    vlans: '31'
+  - profile: Pod3_Host-F
+    mode: trunk
+    vlans: '32'
+
 # Definition of connected endpoints in the fabric.
 servers:
   - name: Host-A
@@ -21,7 +44,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf1, Leaf2]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod1_Host-A
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -39,7 +62,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf1, Leaf2]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod1_Host-B
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -57,7 +80,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf3, Leaf4]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod2_Host-C
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -75,7 +98,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf3, Leaf4]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod2_Host-D
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -87,42 +110,40 @@ servers:
   - name: Host-E
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports: [Ethernet1, Ethernet2]     
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
         switch_ports: [Ethernet5, Ethernet5]
         # Switch names where the server ports are connected.
-        switches: [Leaf5, Leaf6]      
+        switches: [Leaf5, Leaf6]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod3_Host-E
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        # EVPN Multihoming ports
-        # evpn_multihoming: true          
         # Definition of the pair of ports as port channel.
-        port_channel:                  
+        port_channel:
           description: EVPN_AA_PortChannel
-          mode: active                 
-          #short_esi: "0000:0000:0001" 
+          mode: active
+        ethernet_segment:
+          short_esi: "0000:0000:0001"
   - name: Host-F
     adapters:
         # Name of the server interfaces that will be used in the description of each interface
-      - endpoint_ports: [Ethernet1, Ethernet2]     
+      - endpoint_ports: [Ethernet1, Ethernet2]
         # Switch interfaces where the server ports are connected.
         switch_ports: [Ethernet6, Ethernet6]
         # Switch names where the server ports are connected.
-        switches: [Leaf5, Leaf6]      
+        switches: [Leaf5, Leaf6]
         # VLANs that will be configured on these ports.
-        vlans: 10,20
+        profile: Pod3_Host-F
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
         spanning_tree_portfast: edge
-        # EVPN Multihoming ports
-        # evpn_multihoming: true          
         # Definition of the pair of ports as port channel.
-        port_channel:                  
+        port_channel:
           description: EVPN_AA_PortChannel
-          mode: active                 
-          #short_esi: "0000:0000:0002"
+          mode: active
+        ethernet_segment:
+          short_esi: "0000:0000:0002"
