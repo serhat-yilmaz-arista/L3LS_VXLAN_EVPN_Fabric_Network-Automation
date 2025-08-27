@@ -82,11 +82,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.1.5/32
-- name: Loopback10
-  description: DIAG_VRF_VRF_A
-  shutdown: false
-  vrf: VRF_A
-  ip_address: 10.255.10.5/32
 management_api_http:
   enable_http: true
   enable_https: true
@@ -299,9 +294,6 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 172.20.20.1
 transceiver_qsfp_default_mode_4x10: true
-virtual_source_nat_vrfs:
-- name: VRF_A
-  ip_address: 10.255.10.5
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3

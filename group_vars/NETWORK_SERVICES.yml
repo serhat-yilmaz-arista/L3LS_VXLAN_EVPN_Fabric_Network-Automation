@@ -11,12 +11,12 @@ tenants:
         vrf_vni: 10
         # Enable VTEP Network diagnostics
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
-        vtep_diagnostic:
-          # Loopback interface
-          loopback: 10
-          # Loopback ip range, a unique ip is derived from this ranged and assigned
-          # to each l3 leaf based on it's unique id.
-          loopback_ip_range: 10.255.10.0/27
+        # vtep_diagnostic:
+        #   # Loopback interface
+        #   loopback: 10
+        #   # Loopback ip range, a unique ip is derived from this ranged and assigned
+        #   # to each l3 leaf based on it's unique id.
+        #   loopback_ip_range: 10.255.10.0/27
         svis:
           # SVI definitions
           - id: 11

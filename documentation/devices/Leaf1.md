@@ -43,9 +43,6 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Virtual Source NAT](#virtual-source-nat)
-  - [Virtual Source NAT Summary](#virtual-source-nat-summary)
-  - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
@@ -330,7 +327,6 @@ interface Port-Channel6
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 10.255.0.3/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.1.3/32 |
-| Loopback10 | DIAG_VRF_VRF_A | VRF_A | 10.255.10.3/32 |
 
 ##### IPv6
 
@@ -338,7 +334,6 @@ interface Port-Channel6
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback10 | DIAG_VRF_VRF_A | VRF_A | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -353,12 +348,6 @@ interface Loopback1
    description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 192.168.1.3/32
-!
-interface Loopback10
-   description DIAG_VRF_VRF_A
-   no shutdown
-   vrf VRF_A
-   ip address 10.255.10.3/32
 ```
 
 ### VLAN Interfaces
@@ -788,21 +777,6 @@ route-map RM-MLAG-PEER-IN permit 10
 ```eos
 !
 vrf instance VRF_A
-```
-
-## Virtual Source NAT
-
-### Virtual Source NAT Summary
-
-| Source NAT VRF | Source NAT IPv4 Address | Source NAT IPv6 Address |
-| -------------- | ----------------------- | ----------------------- |
-| VRF_A | 10.255.10.3 | - |
-
-### Virtual Source NAT Configuration
-
-```eos
-!
-ip address virtual source-nat vrf VRF_A address 10.255.10.3
 ```
 
 ## EOS CLI Device Configuration
