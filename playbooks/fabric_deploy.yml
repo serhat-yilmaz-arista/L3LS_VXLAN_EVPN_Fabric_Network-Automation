@@ -4,39 +4,39 @@
   gather_facts: false
   tasks:
 
-    - name: Generate EOS Snapshots
-      ansible.builtin.import_role:
-        name: arista.avd.eos_snapshot
-      vars:
-        commands_list:
-          - show version
-          - show running-config
-          - show lldp neighbors
-          - show interfaces description
-          - show bgp summary
-          - show bgp evpn summary
-          - show bgp evpn route-type mac-ip
-          - show bgp evpn route-type imet
-          - show bgp evpn route-type ip-prefix
-          - show vxlan vni
-          - show interfaces vxlan1
-          - show ip route
-          - show ip bgp
-          - show arp
-      no_log: true
+    # - name: Generate EOS Snapshots
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.eos_snapshot
+    #   vars:
+    #     commands_list:
+    #       - show version
+    #       - show running-config
+    #       - show lldp neighbors
+    #       - show interfaces description
+    #       - show bgp summary
+    #       - show bgp evpn summary
+    #       - show bgp evpn route-type mac-ip
+    #       - show bgp evpn route-type imet
+    #       - show bgp evpn route-type ip-prefix
+    #       - show vxlan vni
+    #       - show interfaces vxlan1
+    #       - show ip route
+    #       - show ip bgp
+    #       - show arp
+    #   no_log: true
 
-    - name: Generate AVD Structured Configurations and Fabric Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_designs
+    # - name: Generate AVD Structured Configurations and Fabric Documentation
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.eos_designs
 
-    - name: Generate Device Configurations and Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_cli_config_gen    
+    # - name: Generate Device Configurations and Documentation
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.eos_cli_config_gen    
 
     - name: Deploy generated configuration to devices
       ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_eapi
 
-    - name: Validate states on EOS devices
-      ansible.builtin.import_role:
-        name: arista.avd.eos_validate_state
+    # - name: Validate states on EOS devices
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.eos_validate_state

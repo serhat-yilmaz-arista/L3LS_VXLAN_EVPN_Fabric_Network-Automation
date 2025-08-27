@@ -9,9 +9,9 @@ vlan {{ vlan.id }}
 interface Port-Channel{{ pc.id }}
    description From_{{ inventory_hostname }}_to_{{ h.port_channels[0].connected_leaf | join('&') }}
    switchport
-   switchport mode access
+   switchport mode trunk
 {%     for vlan in h.vlans %}
-   switchport access vlan {{ vlan.id }}
+   switchport trunk allowed vlan {{ vlan.id }}
 {%     endfor %}
    no shutdown
 !
