@@ -1,0 +1,34 @@
+---
+- name: Run Ping Tests Between All Hosts
+  hosts: HOSTS
+  gather_facts: false
+  vars:
+    hosts_ips: |
+      {% set ips = {} %}
+      {% for h, data in hosts_map.items() %}
+      {%   set svi_ip = data.vlans[0].svi_ip.split('/')[0] %}
+      {%   set _ = ips.update({h: svi_ip}) %}
+      {% endfor %}
+      {{ ips }}
+  tasks:
+
+    - name: Select first VLAN for {{ inventory_hostname }}
+      set_fact:
+        vlan: "{{ hosts_map[inventory_hostname].vlans[0] }}"
+
+    - name: Run ping tests from {{ inventory_hostname }}
+      eos_command:
+        commands:
+          - "ping {{ item.value }} source {{ vlan.svi_ip.split('/')[0] }}"
+      loop: "{{ hosts_ips|dict2items|rejectattr('key', 'equalto', inventory_hostname)|list }}"
+      loop_control:
+        label: "{{ item.value }}"
+      register: ping_results
+
+    - name: Print formatted results for {{ inventory_hostname }}
+      debug:
+        msg: |
+          Ping results from {{ inventory_hostname }} ({{ vlan.svi_ip.split('/')[0] }}):
+          {% for r in ping_results.results %}
+          -> {{ r.item.value }} : {{ 'PASS' if ' 0% packet loss' in r.stdout[0] else 'FAIL' }}
+          {% endfor %}
