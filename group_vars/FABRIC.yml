@@ -68,8 +68,6 @@ overlay_routing_protocol: ebgp
 #   mlag_ipv4_underlay_peer:
 #       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
-
-
 # BGP Defaults
 bgp_default_ipv4_unicast: false
 bgp_distance:

@@ -1,0 +1,18 @@
+Arista cEOSLab
+Hardware version: 
+Serial number: SERHATSPINE1
+Hardware MAC address: 001c.eaae.89c3
+System MAC address: 001c.eaae.89c3
+
+Software image version: 4.34.1F-42424637.4341F (engineering build)
+Architecture: x86_64
+Internal build version: 4.34.1F-42424637.4341F
+Internal build ID: 7ba787cb-1add-413d-ab3e-8913ddc04827
+Image format version: 1.0
+Image optimization: None
+
+Kernel version: 5.14.0-570.18.1.el9_6.x86_64
+
+Uptime: 1 day, 22 hours and 28 minutes
+Total memory: 263079940 kB
+Free memory: 112348424 kB

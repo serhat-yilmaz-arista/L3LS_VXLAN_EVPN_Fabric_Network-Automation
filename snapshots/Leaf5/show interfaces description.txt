@@ -1,0 +1,14 @@
+Interface                      Status         Protocol           Description
+Et1                            up             up                 P2P_Spine1_Ethernet5
+Et2                            up             up                 P2P_Spine2_Ethernet5
+Et5                            up             up                 SERVER_Host-E_Ethernet1
+Et6                            up             up                 SERVER_Host-F_Ethernet1
+Lo0                            up             up                 ROUTER_ID
+Lo1                            up             up                 VXLAN_TUNNEL_SOURCE
+Ma0                            up             up                 OOB_MANAGEMENT
+Po5                            down           lowerlayerdown     EVPN_AA_PortChannel
+Po6                            down           lowerlayerdown     EVPN_AA_PortChannel
+Vl31                           up             up                 VRF_A_VLAN_31
+Vl32                           up             up                 VRF_A_VLAN_32
+Vl4097                         up             up                 
+Vx1                            up             up                 Leaf5_VTEP

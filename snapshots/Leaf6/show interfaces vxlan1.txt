@@ -1,0 +1,20 @@
+Vxlan1 is up, line protocol is up (connected)
+  Hardware is Vxlan
+  Description: Leaf6_VTEP
+  Source interface is Loopback1 and is active with 192.168.1.8
+  Listening on UDP port 4789
+  Replication/Flood Mode is headend with Flood List Source: EVPN
+  Remote MAC learning via EVPN
+  VNI mapping to VLANs
+  Static VLAN to VNI mapping is 
+    [31, 10031]       [32, 10032]      
+  Dynamic VLAN to VNI mapping for 'evpn' is
+    [4097, 10]       
+  Note: All Dynamic VLANs used by VCS are internal VLANs.
+        Use 'show vxlan vni' for details.
+  Static VRF to VNI mapping is 
+   [VRF_A, 10]
+  Headend replication flood vtep list is:
+    31 192.168.1.7    
+    32 192.168.1.7    
+  Shared Router MAC is 0000.0000.0000

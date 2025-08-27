@@ -1,0 +1,30 @@
+Last table change time   : 0:09:13 ago
+Number of table inserts  : 2996
+Number of table deletes  : 2974
+Number of table drops    : 0
+Number of table age-outs : 2974
+
+Port          Neighbor Device ID       Neighbor Port ID    TTL
+---------- ------------------------ ---------------------- ---
+Et1           Spine1                   Ethernet3           120
+Et2           Spine2                   Ethernet3           120
+Et3           Leaf4                    Ethernet3           120
+Et4           Leaf4                    Ethernet4           120
+Et5           Host-C                   Ethernet1           120
+Et6           Host-D                   Ethernet1           120
+Ma0           Spine1                   Management0         120
+Ma0           Host-A                   Management0         120
+Ma0           Leaf2                    Management0         120
+Ma0           Spine2                   Management0         120
+Ma0           Host-F                   Management0         120
+Ma0           Host-A                   Management0         120
+Ma0           Host-C                   Management0         120
+Ma0           s1-host2                 Management0         120
+Ma0           ceos2                    Management0         120
+Ma0           Spine1                   Management0         120
+Ma0           sw1                      Management0         120
+Ma0           sw2                      Management0         120
+Ma0           Host-D                   Management0         120
+Ma0           Leaf5                    Management0         120
+Ma0           Leaf4                    Management0         120
+Ma0           Host-C                   Management0         120

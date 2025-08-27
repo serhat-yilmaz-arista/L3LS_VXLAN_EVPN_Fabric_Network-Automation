@@ -1,0 +1,52 @@
+BGP routing table information for VRF default
+Router identifier 10.255.0.7, local AS number 65005
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending best path selection
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.255.0.3:10 ip-prefix 10.10.11.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ *  ec    RD: 10.255.0.3:10 ip-prefix 10.10.11.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ * >Ec    RD: 10.255.0.4:10 ip-prefix 10.10.11.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ *  ec    RD: 10.255.0.4:10 ip-prefix 10.10.11.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ * >Ec    RD: 10.255.0.3:10 ip-prefix 10.10.12.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ *  ec    RD: 10.255.0.3:10 ip-prefix 10.10.12.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ * >Ec    RD: 10.255.0.4:10 ip-prefix 10.10.12.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ *  ec    RD: 10.255.0.4:10 ip-prefix 10.10.12.0/24
+                                 192.168.1.3           -       100     0       65100 65001 i
+ * >Ec    RD: 10.255.0.5:10 ip-prefix 10.10.21.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ *  ec    RD: 10.255.0.5:10 ip-prefix 10.10.21.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ * >Ec    RD: 10.255.0.6:10 ip-prefix 10.10.21.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ *  ec    RD: 10.255.0.6:10 ip-prefix 10.10.21.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ * >Ec    RD: 10.255.0.5:10 ip-prefix 10.10.22.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ *  ec    RD: 10.255.0.5:10 ip-prefix 10.10.22.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ * >Ec    RD: 10.255.0.6:10 ip-prefix 10.10.22.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ *  ec    RD: 10.255.0.6:10 ip-prefix 10.10.22.0/24
+                                 192.168.1.5           -       100     0       65100 65002 i
+ * >      RD: 10.255.0.7:10 ip-prefix 10.10.31.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.255.0.8:10 ip-prefix 10.10.31.0/24
+                                 192.168.1.8           -       100     0       65100 65006 i
+ *  ec    RD: 10.255.0.8:10 ip-prefix 10.10.31.0/24
+                                 192.168.1.8           -       100     0       65100 65006 i
+ * >      RD: 10.255.0.7:10 ip-prefix 10.10.32.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.255.0.8:10 ip-prefix 10.10.32.0/24
+                                 192.168.1.8           -       100     0       65100 65006 i
+ *  ec    RD: 10.255.0.8:10 ip-prefix 10.10.32.0/24
+                                 192.168.1.8           -       100     0       65100 65006 i

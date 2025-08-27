@@ -1,0 +1,191 @@
+! Command: show running-config
+! device: Leaf5 (cEOSLab, EOS-4.34.1F-42424637.4341F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$D6X/0n0DCU8E8ut8$2ZVNvYRrdHZieTLaJ4BnNOQD.FlrdzHAx0dkQapUN0FZpjpewlCSGDiF7.m8.q48CAke72NDGo1vpm0eZEclE.
+!
+management api http-commands
+   protocol http
+   no shutdown
+   !
+   vrf default
+      no shutdown
+!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   no shutdown
+!
+vlan internal order ascending range 1006 1199
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname Leaf5
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+vlan 31
+   name VRF_A_VLAN_31
+!
+vlan 32
+   name VRF_A_VLAN_32
+!
+vrf instance VRF_A
+!
+interface Port-Channel5
+   description EVPN_AA_PortChannel
+   switchport trunk allowed vlan 31
+   switchport mode trunk
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0001
+      route-target import 00:00:00:00:00:01
+   lacp system-id 0000.0000.0001
+   spanning-tree portfast edge
+!
+interface Port-Channel6
+   description EVPN_AA_PortChannel
+   switchport trunk allowed vlan 32
+   switchport mode trunk
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0002
+      route-target import 00:00:00:00:00:02
+   lacp system-id 0000.0000.0002
+   spanning-tree portfast edge
+!
+interface Ethernet1
+   description P2P_Spine1_Ethernet5
+   mtu 1500
+   no switchport
+   ip address 10.255.255.17/31
+!
+interface Ethernet2
+   description P2P_Spine2_Ethernet5
+   mtu 1500
+   no switchport
+   ip address 10.255.255.19/31
+!
+interface Ethernet5
+   description SERVER_Host-E_Ethernet1
+   channel-group 5 mode active
+!
+interface Ethernet6
+   description SERVER_Host-F_Ethernet1
+   channel-group 6 mode active
+!
+interface Loopback0
+   description ROUTER_ID
+   ip address 10.255.0.7/32
+!
+interface Loopback1
+   description VXLAN_TUNNEL_SOURCE
+   ip address 192.168.1.7/32
+!
+interface Management0
+   description OOB_MANAGEMENT
+   ip address 172.20.20.71/24
+!
+interface Vlan31
+   description VRF_A_VLAN_31
+   vrf VRF_A
+   ip address virtual 10.10.31.254/24
+!
+interface Vlan32
+   description VRF_A_VLAN_32
+   vrf VRF_A
+   ip address virtual 10.10.32.254/24
+!
+interface Vxlan1
+   description Leaf5_VTEP
+   vxlan source-interface Loopback1
+   vxlan udp-port 4789
+   vxlan vlan 31 vni 10031
+   vxlan vlan 32 vni 10032
+   vxlan vrf VRF_A vni 10
+!
+ip virtual-router mac-address 00:1c:73:00:00:99
+!
+ip routing
+ip routing vrf VRF_A
+!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 10.255.0.0/27 eq 32
+   seq 20 permit 192.168.1.0/27 eq 32
+!
+ip route 0.0.0.0/0 172.20.20.1
+!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+!
+router bgp 65005
+   router-id 10.255.0.7
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
+   maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-PEERS send-community
+   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.255.0.1 remote-as 65100
+   neighbor 10.255.0.1 description Spine1_Loopback0
+   neighbor 10.255.0.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.255.0.2 remote-as 65100
+   neighbor 10.255.0.2 description Spine2_Loopback0
+   neighbor 10.255.255.16 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.16 remote-as 65100
+   neighbor 10.255.255.16 description Spine1_Ethernet5
+   neighbor 10.255.255.18 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.18 remote-as 65100
+   neighbor 10.255.255.18 description Spine2_Ethernet5
+   redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan 31
+      rd 10.255.0.7:10031
+      route-target both 10031:10031
+      redistribute learned
+   !
+   vlan 32
+      rd 10.255.0.7:10032
+      route-target both 10032:10032
+      redistribute learned
+   !
+   address-family evpn
+      neighbor EVPN-OVERLAY-PEERS activate
+   !
+   address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor IPv4-UNDERLAY-PEERS activate
+   !
+   vrf VRF_A
+      rd 10.255.0.7:10
+      route-target import evpn 10:10
+      route-target export evpn 10:10
+      router-id 10.255.0.7
+      redistribute connected
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+end

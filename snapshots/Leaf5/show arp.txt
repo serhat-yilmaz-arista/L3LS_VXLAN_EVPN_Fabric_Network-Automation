@@ -1,0 +1,4 @@
+Address         Age (sec)  Hardware Addr   Interface
+10.255.255.16     0:00:30  aac1.abb1.a57a  Ethernet1
+10.255.255.18     0:00:13  aac1.abfe.59d2  Ethernet2
+172.20.20.1       0:00:00  9a5f.f8e6.7bd6  Management0

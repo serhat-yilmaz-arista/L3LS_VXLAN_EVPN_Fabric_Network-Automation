@@ -1,0 +1,16 @@
+BGP summary information for VRF default
+Router identifier 10.255.0.2, local AS number 65100
+Neighbor               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc   NLRI Adv
+------------- ----------- ------------- ----------------------- -------------- ---------- ---------- ----------
+10.255.0.3          65001 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.0.4          65001 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.0.5          65002 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.0.6          65002 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.0.7          65005 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.0.8          65006 Established   L2VPN EVPN              Negotiated              4          4         20
+10.255.255.3        65001 Established   IPv4 Unicast            Negotiated              3          3          9
+10.255.255.7        65001 Established   IPv4 Unicast            Negotiated              3          3         10
+10.255.255.11       65002 Established   IPv4 Unicast            Negotiated              3          3          9
+10.255.255.15       65002 Established   IPv4 Unicast            Negotiated              3          3         10
+10.255.255.19       65005 Established   IPv4 Unicast            Negotiated              2          2          9
+10.255.255.23       65006 Established   IPv4 Unicast            Negotiated              2          2          9

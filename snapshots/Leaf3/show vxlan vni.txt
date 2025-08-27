@@ -1,0 +1,12 @@
+VNI to VLAN Mapping for Vxlan1
+VNI         VLAN       Source       Interface           802.1Q Tag
+----------- ---------- ------------ ------------------- ----------
+10021       21         static       Port-Channel5       21        
+                                    Vxlan1              21        
+10022       22         static       Port-Channel6       22        
+                                    Vxlan1              22        
+
+VNI to dynamic VLAN Mapping for Vxlan1
+VNI       VLAN       VRF         Source       
+--------- ---------- ----------- ------------ 
+10        4097       VRF_A       evpn

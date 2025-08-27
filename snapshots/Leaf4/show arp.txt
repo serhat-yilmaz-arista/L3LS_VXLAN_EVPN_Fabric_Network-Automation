@@ -1,0 +1,6 @@
+Address         Age (sec)  Hardware Addr   Interface
+10.255.255.12     0:00:17  aac1.abb4.fad5  Ethernet1
+10.255.255.14     0:00:29  aac1.abee.1c07  Ethernet2
+10.255.1.100      0:00:22  001c.eaae.13b2  Vlan4093, Port-Channel3
+10.255.1.68       0:00:00  001c.eaae.13b2  Vlan4094, Port-Channel3
+172.20.20.1       0:00:00  9a5f.f8e6.7bd6  Management0
