@@ -1,14 +1,48 @@
 ---
 - name: CVP Connectivity Test
   hosts: CLOUDVISION
+  connection: local
   gather_facts: false
-
   tasks:
+
     - name: Gather CVP device facts
       arista.cvp.cv_facts_v3:
         facts:
           - devices
       register: cvp_facts
+    
+    - name: Print CVP facts
+      debug:
+        var: cvp_facts
 
-# We need root container in container hierarchy
-# I can record when I use arista.cvp role to create containers in CVP
+    # - name: Create container hierarchy
+    #   arista.cvp.cv_container_v3:
+    #     topology: "{{ cvp_containers_topology }}"
+    #     apply_mode: loose  
+
+    # - name: Move devices into containers
+    #   arista.cvp.cv_device_v3:
+    #     devices: "{{ cvp_devices_map }}"
+    #     state: present
+    #     search_key: fqdn
+    #     apply_mode: loose
+
+    # - name: Gather pending tasks from CVP
+    #   arista.cvp.cv_facts_v3:
+    #     facts:
+    #       - tasks
+    #   register: cvp_task_facts
+
+    # - name: Build list of pending task IDs
+    #   set_fact:
+    #     pending_task_ids: "{{ cvp_task_facts.data.cvp_tasks | dict2items | map(attribute='key') | list }}"
+
+    # - name: Execute pending tasks on CVP
+    #   arista.cvp.cv_task_v3:
+    #     tasks: "{{ pending_task_ids }}"
+    #     state: executed
+    #   register: executed_tasks
+
+    # - name: Show executed CVP tasks
+    #   debug:
+    #     var: executed_tasks

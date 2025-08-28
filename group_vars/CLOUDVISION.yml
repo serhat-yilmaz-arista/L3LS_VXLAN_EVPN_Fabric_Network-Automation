@@ -6,3 +6,49 @@ ansible_network_os: eos
 ansible_httpapi_use_ssl: true
 ansible_httpapi_validate_certs: false
 ansible_httpapi_port: 443
+
+# Container topology definition
+cvp_containers_topology:
+  Leafs:
+    parentContainerName: Tenant
+  Spines:
+    parentContainerName: Tenant
+  Hosts:
+    parentContainerName: Tenant
+  Pod1_Leafs:
+    parentContainerName: Leafs
+  Pod2_Leafs:
+    parentContainerName: Leafs
+  Pod3_Leafs:
+    parentContainerName: Leafs
+
+# Device to container mapping
+cvp_devices_map:
+  - fqdn: Spine1
+    parentContainerName: Spines
+  - fqdn: Spine2
+    parentContainerName: Spines
+  - fqdn: Leaf1
+    parentContainerName: Pod1_Leafs
+  - fqdn: Leaf2
+    parentContainerName: Pod1_Leafs
+  - fqdn: Leaf3
+    parentContainerName: Pod2_Leafs
+  - fqdn: Leaf4
+    parentContainerName: Pod2_Leafs
+  - fqdn: Leaf5
+    parentContainerName: Pod3_Leafs
+  - fqdn: Leaf6
+    parentContainerName: Pod3_Leafs
+  - fqdn: Host-A
+    parentContainerName: Hosts
+  - fqdn: Host-B
+    parentContainerName: Hosts
+  - fqdn: Host-C
+    parentContainerName: Hosts
+  - fqdn: Host-D
+    parentContainerName: Hosts
+  - fqdn: Host-E
+    parentContainerName: Hosts
+  - fqdn: Host-F
+    parentContainerName: Hosts
