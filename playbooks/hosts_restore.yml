@@ -1,0 +1,76 @@
+---
+- name: Ask which host to restore
+  hosts: localhost
+  gather_facts: false
+  vars:
+    host_list: "{{ groups['HOSTS'] }}"
+  tasks:
+
+    - name: Show available hosts
+      ansible.builtin.debug:
+        msg: "{{ host_list }}"
+
+    - name: Ask user which host to restore
+      ansible.builtin.pause:
+        prompt: "Enter the host name to restore"
+      register: selected_host
+
+    - name: Fail if no host name is selected or invalid
+      ansible.builtin.fail:
+        msg: "Invalid host selected. Exiting. Please choose a host from the list."
+      when: selected_host.user_input is not defined 
+            or selected_host.user_input == "" 
+            or selected_host.user_input not in host_list
+
+    - name: Set host to restore
+      set_fact:
+        target_host: "{{ selected_host.user_input }}"
+
+
+- name: Restore configuration for selected host
+  hosts: "{{ hostvars['localhost']['target_host'] }}"
+  gather_facts: false
+  tasks:
+
+    - name: List available backup files for {{ inventory_hostname }}
+      set_fact:
+        available_backups: "{{ lookup('fileglob', '../backups/hosts/{{ inventory_hostname }}/*.cfg', wantlist=True) | sort }}"
+    
+    - name: Show available backups (filenames only)
+      ansible.builtin.debug:
+        msg: "{{ available_backups | map('basename') | list }}"
+
+    - name: Ask user which backup to restore
+      ansible.builtin.pause:
+        prompt: "Enter the backup filename to restore for {{ inventory_hostname }}"
+      register: user_choice
+    
+    - name: Fail if user did not enter a backup filename
+      ansible.builtin.fail:
+        msg: "No backup filename entered. Exiting!"
+      when: user_choice.user_input is not defined or user_choice.user_input == ""
+
+    - name: Set full path for selected backup
+      set_fact:
+        backup_file_path: "../backups/hosts/{{ inventory_hostname }}/{{ user_choice.user_input }}"
+
+    - name: Fail if selected backup does not exist
+      ansible.builtin.stat:
+        path: "{{ backup_file_path }}"
+      register: backup_check
+      delegate_to: localhost
+
+    - name: Fail if backup file not found
+      ansible.builtin.fail:
+        msg: "Backup file {{ backup_file_path }} does not exist!"
+      when: not backup_check.stat.exists
+
+    - name: Restore backup config to {{ inventory_hostname }}
+      arista.eos.eos_config:
+        src: "{{ backup_file_path }}"
+        replace: config       # replaces the running config
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Display restore status
+      ansible.builtin.debug:
+        msg: "Restored {{ inventory_hostname }} from backup {{ backup_file_path }}"

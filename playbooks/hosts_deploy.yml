@@ -18,6 +18,7 @@
     - name: Push rendered Host config to {{ inventory_hostname }}
       arista.eos.eos_config:
         src: "../host_configs/{{ inventory_hostname }}.cfg"
+        replace: config
       register: config_result
 
     - name: Display status of configuration push for {{ inventory_hostname }}

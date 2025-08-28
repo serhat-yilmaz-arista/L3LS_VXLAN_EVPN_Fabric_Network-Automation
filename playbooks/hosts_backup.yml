@@ -1,0 +1,27 @@
+---
+- name: Backup Hosts Configurations
+  hosts: HOSTS
+  gather_facts: false
+  tasks:
+
+    - name: Generate timestamp on controller
+      delegate_to: localhost
+      run_once: true
+      set_fact:
+        timestamp: "{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
+
+    - name: Ensure backup directory for host exists
+      ansible.builtin.file:
+        path: "./backups/hosts/{{ inventory_hostname }}"
+        state: directory
+        mode: '0755'
+
+    - name: Collect current running config
+      arista.eos.eos_command:
+        commands: "show running-config"
+      register: running_config
+
+    - name: Write backup config to file with timestamp
+      ansible.builtin.copy:
+        content: "{{ running_config.stdout[0] }}"
+        dest: "./backups/hosts/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ timestamp }}.cfg"
