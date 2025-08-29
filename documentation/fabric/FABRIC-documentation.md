@@ -83,34 +83,35 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 10.255.0.0/27 | 32 | 8 | 25.0 % |
+| 10.1.1.0/27 | 32 | 6 | 18.75 % |
+| 10.2.2.0/27 | 32 | 2 | 6.25 % |
 
 ### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| FABRIC | Leaf1 | 10.255.0.3/32 |
-| FABRIC | Leaf2 | 10.255.0.4/32 |
-| FABRIC | Leaf3 | 10.255.0.5/32 |
-| FABRIC | Leaf4 | 10.255.0.6/32 |
-| FABRIC | Leaf5 | 10.255.0.7/32 |
-| FABRIC | Leaf6 | 10.255.0.8/32 |
-| FABRIC | Spine1 | 10.255.0.1/32 |
-| FABRIC | Spine2 | 10.255.0.2/32 |
+| FABRIC | Leaf1 | 10.1.1.3/32 |
+| FABRIC | Leaf2 | 10.1.1.4/32 |
+| FABRIC | Leaf3 | 10.1.1.5/32 |
+| FABRIC | Leaf4 | 10.1.1.6/32 |
+| FABRIC | Leaf5 | 10.1.1.7/32 |
+| FABRIC | Leaf6 | 10.1.1.8/32 |
+| FABRIC | Spine1 | 10.2.2.1/32 |
+| FABRIC | Spine2 | 10.2.2.2/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.1.0/27 | 32 | 6 | 18.75 % |
+| 1.1.1.0/27 | 32 | 6 | 18.75 % |
 
 ### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
-| FABRIC | Leaf1 | 192.168.1.3/32 |
-| FABRIC | Leaf2 | 192.168.1.3/32 |
-| FABRIC | Leaf3 | 192.168.1.5/32 |
-| FABRIC | Leaf4 | 192.168.1.5/32 |
-| FABRIC | Leaf5 | 192.168.1.7/32 |
-| FABRIC | Leaf6 | 192.168.1.8/32 |
+| FABRIC | Leaf1 | 1.1.1.3/32 |
+| FABRIC | Leaf2 | 1.1.1.3/32 |
+| FABRIC | Leaf3 | 1.1.1.5/32 |
+| FABRIC | Leaf4 | 1.1.1.5/32 |
+| FABRIC | Leaf5 | 1.1.1.7/32 |
+| FABRIC | Leaf6 | 1.1.1.8/32 |

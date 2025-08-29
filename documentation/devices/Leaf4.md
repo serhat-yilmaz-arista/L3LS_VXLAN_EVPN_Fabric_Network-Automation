@@ -325,8 +325,8 @@ interface Port-Channel6
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 10.255.0.6/32 |
-| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.1.5/32 |
+| Loopback0 | ROUTER_ID | default | 10.1.1.6/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 1.1.1.5/32 |
 
 ##### IPv6
 
@@ -342,12 +342,12 @@ interface Port-Channel6
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 10.255.0.6/32
+   ip address 10.1.1.6/32
 !
 interface Loopback1
    description VXLAN_TUNNEL_SOURCE
    no shutdown
-   ip address 192.168.1.5/32
+   ip address 1.1.1.5/32
 ```
 
 ### VLAN Interfaces
@@ -520,7 +520,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65002 | 10.255.0.6 |
+| 65002 | 10.1.1.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -563,8 +563,8 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.255.0.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.2.2.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.2.2.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.1.100 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.12 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.14 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
@@ -582,21 +582,21 @@ ASN Notation: asplain
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 21 | 10.255.0.6:10021 | 10021:10021 | - | - | learned |
-| 22 | 10.255.0.6:10022 | 10022:10022 | - | - | learned |
+| 21 | 10.1.1.6:10021 | 10021:10021 | - | - | learned |
+| 22 | 10.1.1.6:10022 | 10022:10022 | - | - | learned |
 
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| VRF_A | 10.255.0.6:10 | connected | - |
+| VRF_A | 10.1.1.6:10 | connected | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65002
-   router-id 10.255.0.6
+   router-id 10.1.1.6
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -616,12 +616,12 @@ router bgp 65002
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.1 remote-as 65100
-   neighbor 10.255.0.1 description Spine1_Loopback0
-   neighbor 10.255.0.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.2 remote-as 65100
-   neighbor 10.255.0.2 description Spine2_Loopback0
+   neighbor 10.2.2.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.2.2.1 remote-as 65100
+   neighbor 10.2.2.1 description Spine1_Loopback0
+   neighbor 10.2.2.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.2.2.2 remote-as 65100
+   neighbor 10.2.2.2 description Spine2_Loopback0
    neighbor 10.255.1.100 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.1.100 description Leaf3_Vlan4093
    neighbor 10.255.255.12 peer group IPv4-UNDERLAY-PEERS
@@ -633,12 +633,12 @@ router bgp 65002
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 21
-      rd 10.255.0.6:10021
+      rd 10.1.1.6:10021
       route-target both 10021:10021
       redistribute learned
    !
    vlan 22
-      rd 10.255.0.6:10022
+      rd 10.1.1.6:10022
       route-target both 10022:10022
       redistribute learned
    !
@@ -651,10 +651,10 @@ router bgp 65002
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf VRF_A
-      rd 10.255.0.6:10
+      rd 10.1.1.6:10
       route-target import evpn 10:10
       route-target export evpn 10:10
-      router-id 10.255.0.6
+      router-id 10.1.1.6
       neighbor 10.255.1.100 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.1.100 description Leaf3_Vlan3009
       redistribute connected route-map RM-CONN-2-BGP-VRFS
@@ -703,8 +703,8 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.255.0.0/27 eq 32 |
-| 20 | permit 192.168.1.0/27 eq 32 |
+| 10 | permit 10.1.1.0/27 eq 32 |
+| 20 | permit 1.1.1.0/27 eq 32 |
 
 ##### PL-MLAG-PEER-VRFS
 
@@ -717,8 +717,8 @@ router bfd
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.255.0.0/27 eq 32
-   seq 20 permit 192.168.1.0/27 eq 32
+   seq 10 permit 10.1.1.0/27 eq 32
+   seq 20 permit 1.1.1.0/27 eq 32
 !
 ip prefix-list PL-MLAG-PEER-VRFS
    seq 10 permit 10.255.1.100/31
@@ -785,7 +785,8 @@ vrf instance VRF_A
 !
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.63:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   shutdown
    no shutdown
 !
 system l1

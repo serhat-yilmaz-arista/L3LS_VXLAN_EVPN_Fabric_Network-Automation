@@ -45,7 +45,8 @@ management_eapi:
 eos_cli: |
   !
   daemon TerminAttr
-     exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+     exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.63:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+     shutdown
      no shutdown
   !
   system l1
@@ -84,7 +85,7 @@ spine:
     # Set the relevant platform as each platform has different default values in Ansible AVD
     platform: cEOS-LAB
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
-    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_pool: 10.2.2.0/27
     # BGP ASN
     bgp_as: 65100
     # Definition of nodes contained in this group.
@@ -105,13 +106,13 @@ l3leaf:
     # Set the relevant platform as each platform has different default values in Ansible AVD
     platform: cEOS-LAB
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
-    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_pool: 10.1.1.0/27
     # Offset all assigned loopback IP addresses.
     # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
     # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
     loopback_ipv4_offset: 2
     # Definition of pool of IPs to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
-    vtep_loopback_ipv4_pool: 192.168.1.0/27
+    vtep_loopback_ipv4_pool: 1.1.1.0/27
     # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
     uplink_switches:
       - Spine1

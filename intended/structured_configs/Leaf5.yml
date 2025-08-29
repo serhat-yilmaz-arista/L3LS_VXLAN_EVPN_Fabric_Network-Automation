@@ -59,11 +59,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.255.0.7/32
+  ip_address: 10.1.1.7/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.1.7/32
+  ip_address: 1.1.1.7/32
 management_api_http:
   enable_http: true
   enable_https: true
@@ -111,9 +111,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.255.0.0/27 eq 32
+    action: permit 10.1.1.0/27 eq 32
   - sequence: 20
-    action: permit 192.168.1.0/27 eq 32
+    action: permit 1.1.1.0/27 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -128,7 +128,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65005'
-  router_id: 10.255.0.7
+  router_id: 10.1.1.7
   distance:
     external_routes: 20
     internal_routes: 200
@@ -162,12 +162,12 @@ router_bgp:
     remote_as: '65100'
     peer: Spine2
     description: Spine2_Ethernet5
-  - ip_address: 10.255.0.1
+  - ip_address: 10.2.2.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     peer: Spine1
     description: Spine1_Loopback0
-  - ip_address: 10.255.0.2
+  - ip_address: 10.2.2.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     peer: Spine2
@@ -179,7 +179,7 @@ router_bgp:
   vlans:
   - id: 31
     tenant: CUSTOMER_A
-    rd: 10.255.0.7:10031
+    rd: 10.1.1.7:10031
     route_targets:
       both:
       - 10031:10031
@@ -187,7 +187,7 @@ router_bgp:
     - learned
   - id: 32
     tenant: CUSTOMER_A
-    rd: 10.255.0.7:10032
+    rd: 10.1.1.7:10032
     route_targets:
       both:
       - 10032:10032
@@ -205,7 +205,7 @@ router_bgp:
       activate: false
   vrfs:
   - name: VRF_A
-    rd: 10.255.0.7:10
+    rd: 10.1.1.7:10
     route_targets:
       import:
       - address_family: evpn
@@ -215,7 +215,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 10.255.0.7
+    router_id: 10.1.1.7
     redistribute:
       connected:
         enabled: true

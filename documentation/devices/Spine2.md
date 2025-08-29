@@ -216,7 +216,7 @@ interface Ethernet6
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 10.255.0.2/32 |
+| Loopback0 | ROUTER_ID | default | 10.2.2.2/32 |
 
 ##### IPv6
 
@@ -231,7 +231,7 @@ interface Ethernet6
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 10.255.0.2/32
+   ip address 10.2.2.2/32
 ```
 
 ## Routing
@@ -292,7 +292,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100 | 10.255.0.2 |
+| 65100 | 10.2.2.2 |
 
 | BGP Tuning |
 | ---------- |
@@ -326,12 +326,12 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.255.0.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.5 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.6 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.7 | 65005 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.8 | 65006 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.5 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.6 | 65002 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.7 | 65005 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.1.1.8 | 65006 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.255.3 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.7 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.11 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
@@ -352,7 +352,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65100
-   router-id 10.255.0.2
+   router-id 10.2.2.2
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -366,24 +366,24 @@ router bgp 65100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.255.0.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.3 remote-as 65001
-   neighbor 10.255.0.3 description Leaf1_Loopback0
-   neighbor 10.255.0.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.4 remote-as 65001
-   neighbor 10.255.0.4 description Leaf2_Loopback0
-   neighbor 10.255.0.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.5 remote-as 65002
-   neighbor 10.255.0.5 description Leaf3_Loopback0
-   neighbor 10.255.0.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.6 remote-as 65002
-   neighbor 10.255.0.6 description Leaf4_Loopback0
-   neighbor 10.255.0.7 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.7 remote-as 65005
-   neighbor 10.255.0.7 description Leaf5_Loopback0
-   neighbor 10.255.0.8 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.8 remote-as 65006
-   neighbor 10.255.0.8 description Leaf6_Loopback0
+   neighbor 10.1.1.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.3 remote-as 65001
+   neighbor 10.1.1.3 description Leaf1_Loopback0
+   neighbor 10.1.1.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.4 remote-as 65001
+   neighbor 10.1.1.4 description Leaf2_Loopback0
+   neighbor 10.1.1.5 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.5 remote-as 65002
+   neighbor 10.1.1.5 description Leaf3_Loopback0
+   neighbor 10.1.1.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.6 remote-as 65002
+   neighbor 10.1.1.6 description Leaf4_Loopback0
+   neighbor 10.1.1.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.7 remote-as 65005
+   neighbor 10.1.1.7 description Leaf5_Loopback0
+   neighbor 10.1.1.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.1.1.8 remote-as 65006
+   neighbor 10.1.1.8 description Leaf6_Loopback0
    neighbor 10.255.255.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.3 remote-as 65001
    neighbor 10.255.255.3 description Leaf1_Ethernet2
@@ -440,14 +440,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.255.0.0/27 eq 32 |
+| 10 | permit 10.2.2.0/27 eq 32 |
 
 #### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.255.0.0/27 eq 32
+   seq 10 permit 10.2.2.0/27 eq 32
 ```
 
 ### Route-maps
@@ -486,7 +486,8 @@ route-map RM-CONN-2-BGP permit 10
 !
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.63:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   shutdown
    no shutdown
 !
 system l1

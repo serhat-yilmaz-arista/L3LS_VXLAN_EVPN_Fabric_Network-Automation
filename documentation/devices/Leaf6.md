@@ -276,8 +276,8 @@ interface Port-Channel6
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 10.255.0.8/32 |
-| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.1.8/32 |
+| Loopback0 | ROUTER_ID | default | 10.1.1.8/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 1.1.1.8/32 |
 
 ##### IPv6
 
@@ -293,12 +293,12 @@ interface Port-Channel6
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 10.255.0.8/32
+   ip address 10.1.1.8/32
 !
 interface Loopback1
    description VXLAN_TUNNEL_SOURCE
    no shutdown
-   ip address 192.168.1.8/32
+   ip address 1.1.1.8/32
 ```
 
 ### VLAN Interfaces
@@ -443,7 +443,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65006 | 10.255.0.8 |
+| 65006 | 10.1.1.8 |
 
 | BGP Tuning |
 | ---------- |
@@ -476,8 +476,8 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.255.0.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.0.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.2.2.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.2.2.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.255.20 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.22 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
@@ -493,21 +493,21 @@ ASN Notation: asplain
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 31 | 10.255.0.8:10031 | 10031:10031 | - | - | learned |
-| 32 | 10.255.0.8:10032 | 10032:10032 | - | - | learned |
+| 31 | 10.1.1.8:10031 | 10031:10031 | - | - | learned |
+| 32 | 10.1.1.8:10032 | 10032:10032 | - | - | learned |
 
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| VRF_A | 10.255.0.8:10 | connected | - |
+| VRF_A | 10.1.1.8:10 | connected | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65006
-   router-id 10.255.0.8
+   router-id 10.1.1.8
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -520,12 +520,12 @@ router bgp 65006
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.1 remote-as 65100
-   neighbor 10.255.0.1 description Spine1_Loopback0
-   neighbor 10.255.0.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.0.2 remote-as 65100
-   neighbor 10.255.0.2 description Spine2_Loopback0
+   neighbor 10.2.2.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.2.2.1 remote-as 65100
+   neighbor 10.2.2.1 description Spine1_Loopback0
+   neighbor 10.2.2.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 10.2.2.2 remote-as 65100
+   neighbor 10.2.2.2 description Spine2_Loopback0
    neighbor 10.255.255.20 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.20 remote-as 65100
    neighbor 10.255.255.20 description Spine1_Ethernet6
@@ -535,12 +535,12 @@ router bgp 65006
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 31
-      rd 10.255.0.8:10031
+      rd 10.1.1.8:10031
       route-target both 10031:10031
       redistribute learned
    !
    vlan 32
-      rd 10.255.0.8:10032
+      rd 10.1.1.8:10032
       route-target both 10032:10032
       redistribute learned
    !
@@ -552,10 +552,10 @@ router bgp 65006
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf VRF_A
-      rd 10.255.0.8:10
+      rd 10.1.1.8:10
       route-target import evpn 10:10
       route-target export evpn 10:10
-      router-id 10.255.0.8
+      router-id 10.1.1.8
       redistribute connected
 ```
 
@@ -602,16 +602,16 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 10.255.0.0/27 eq 32 |
-| 20 | permit 192.168.1.0/27 eq 32 |
+| 10 | permit 10.1.1.0/27 eq 32 |
+| 20 | permit 1.1.1.0/27 eq 32 |
 
 #### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 10.255.0.0/27 eq 32
-   seq 20 permit 192.168.1.0/27 eq 32
+   seq 10 permit 10.1.1.0/27 eq 32
+   seq 20 permit 1.1.1.0/27 eq 32
 ```
 
 ### Route-maps
@@ -653,7 +653,8 @@ vrf instance VRF_A
 !
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.48:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=10.243.248.63:9910 -cvauth=token,/tmp/token -cvvrf=default -taillogs
+   shutdown
    no shutdown
 !
 system l1
