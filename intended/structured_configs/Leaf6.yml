@@ -204,7 +204,7 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
-  - name: VRF_A
+  - name: CUSTOMER_VRF
     rd: 10.1.1.8:10
     route_targets:
       import:
@@ -231,7 +231,7 @@ vlan_interfaces:
 - name: Vlan11
   description: VRF_A_VLAN_11
   shutdown: false
-  vrf: VRF_A
+  vrf: CUSTOMER_VRF
   ip_address_virtual: 10.10.11.254/24
   tenant: CUSTOMER_A
   tags:
@@ -240,7 +240,7 @@ vlan_interfaces:
 - name: Vlan12
   description: VRF_A_VLAN_12
   shutdown: false
-  vrf: VRF_A
+  vrf: CUSTOMER_VRF
   ip_address_virtual: 10.10.12.254/24
   tenant: CUSTOMER_A
   tags:
@@ -261,7 +261,7 @@ vlans:
 vrfs:
 - name: default
   ip_routing: false
-- name: VRF_A
+- name: CUSTOMER_VRF
   ip_routing: true
   tenant: CUSTOMER_A
 vxlan_interface:
@@ -276,5 +276,5 @@ vxlan_interface:
       - id: 12
         vni: 10012
       vrfs:
-      - name: VRF_A
+      - name: CUSTOMER_VRF
         vni: 10

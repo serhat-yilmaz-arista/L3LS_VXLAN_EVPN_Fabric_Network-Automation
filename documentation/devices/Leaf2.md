@@ -185,7 +185,7 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 11 | VRF_A_VLAN_11 | - |
 | 12 | VRF_A_VLAN_12 | - |
-| 3009 | MLAG_L3_VRF_VRF_A | MLAG |
+| 3009 | MLAG_L3_VRF_CUSTOMER_VRF | MLAG |
 | 4093 | MLAG_L3 | MLAG |
 | 4094 | MLAG | MLAG |
 
@@ -200,7 +200,7 @@ vlan 12
    name VRF_A_VLAN_12
 !
 vlan 3009
-   name MLAG_L3_VRF_VRF_A
+   name MLAG_L3_VRF_CUSTOMER_VRF
    trunk group MLAG
 !
 vlan 4093
@@ -356,9 +356,9 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan11 | VRF_A_VLAN_11 | VRF_A | - | False |
-| Vlan12 | VRF_A_VLAN_12 | VRF_A | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF_A | VRF_A | 1500 | False |
+| Vlan11 | VRF_A_VLAN_11 | CUSTOMER_VRF | - | False |
+| Vlan12 | VRF_A_VLAN_12 | CUSTOMER_VRF | - | False |
+| Vlan3009 | MLAG_L3_VRF_CUSTOMER_VRF | CUSTOMER_VRF | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -366,9 +366,9 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF_A  |  -  |  10.10.11.254/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF_A  |  -  |  10.10.12.254/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRF_A  |  10.255.1.97/31  |  -  |  -  |  -  |  -  |
+| Vlan11 |  CUSTOMER_VRF  |  -  |  10.10.11.254/24  |  -  |  -  |  -  |
+| Vlan12 |  CUSTOMER_VRF  |  -  |  10.10.12.254/24  |  -  |  -  |  -  |
+| Vlan3009 |  CUSTOMER_VRF  |  10.255.1.97/31  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.1.97/31  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.1.65/31  |  -  |  -  |  -  |  -  |
 
@@ -379,20 +379,20 @@ interface Loopback1
 interface Vlan11
    description VRF_A_VLAN_11
    no shutdown
-   vrf VRF_A
+   vrf CUSTOMER_VRF
    ip address virtual 10.10.11.254/24
 !
 interface Vlan12
    description VRF_A_VLAN_12
    no shutdown
-   vrf VRF_A
+   vrf CUSTOMER_VRF
    ip address virtual 10.10.12.254/24
 !
 interface Vlan3009
-   description MLAG_L3_VRF_VRF_A
+   description MLAG_L3_VRF_CUSTOMER_VRF
    no shutdown
    mtu 1500
-   vrf VRF_A
+   vrf CUSTOMER_VRF
    ip address 10.255.1.97/31
 !
 interface Vlan4093
@@ -430,7 +430,7 @@ interface Vlan4094
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-| VRF_A | 10 | - |
+| CUSTOMER_VRF | 10 | - |
 
 #### VXLAN Interface Device Configuration
 
@@ -443,7 +443,7 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 11 vni 10011
    vxlan vlan 12 vni 10012
-   vxlan vrf VRF_A vni 10
+   vxlan vrf CUSTOMER_VRF vni 10
 ```
 
 ## Routing
@@ -477,14 +477,14 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| VRF_A | True |
+| CUSTOMER_VRF | True |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf VRF_A
+ip routing vrf CUSTOMER_VRF
 ```
 
 ### IPv6 Routing
@@ -494,8 +494,8 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| CUSTOMER_VRF | false |
 | default | false |
-| VRF_A | false |
 
 ### Static Routes
 
@@ -568,7 +568,7 @@ ASN Notation: asplain
 | 10.255.1.96 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.4 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.6 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.255.1.96 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF_A | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| 10.255.1.96 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | CUSTOMER_VRF | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -589,7 +589,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| VRF_A | 10.1.1.4:10 | connected | - |
+| CUSTOMER_VRF | 10.1.1.4:10 | connected | - |
 
 #### Router BGP Device Configuration
 
@@ -650,7 +650,7 @@ router bgp 65001
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
-   vrf VRF_A
+   vrf CUSTOMER_VRF
       rd 10.1.1.4:10
       route-target import evpn 10:10
       route-target export evpn 10:10
@@ -770,13 +770,13 @@ route-map RM-MLAG-PEER-IN permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| VRF_A | enabled |
+| CUSTOMER_VRF | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
-vrf instance VRF_A
+vrf instance CUSTOMER_VRF
 ```
 
 ## EOS CLI Device Configuration

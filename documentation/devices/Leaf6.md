@@ -307,15 +307,15 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan11 | VRF_A_VLAN_11 | VRF_A | - | False |
-| Vlan12 | VRF_A_VLAN_12 | VRF_A | - | False |
+| Vlan11 | VRF_A_VLAN_11 | CUSTOMER_VRF | - | False |
+| Vlan12 | VRF_A_VLAN_12 | CUSTOMER_VRF | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF_A  |  -  |  10.10.11.254/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF_A  |  -  |  10.10.12.254/24  |  -  |  -  |  -  |
+| Vlan11 |  CUSTOMER_VRF  |  -  |  10.10.11.254/24  |  -  |  -  |  -  |
+| Vlan12 |  CUSTOMER_VRF  |  -  |  10.10.12.254/24  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
@@ -324,13 +324,13 @@ interface Loopback1
 interface Vlan11
    description VRF_A_VLAN_11
    no shutdown
-   vrf VRF_A
+   vrf CUSTOMER_VRF
    ip address virtual 10.10.11.254/24
 !
 interface Vlan12
    description VRF_A_VLAN_12
    no shutdown
-   vrf VRF_A
+   vrf CUSTOMER_VRF
    ip address virtual 10.10.12.254/24
 ```
 
@@ -354,7 +354,7 @@ interface Vlan12
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
-| VRF_A | 10 | - |
+| CUSTOMER_VRF | 10 | - |
 
 #### VXLAN Interface Device Configuration
 
@@ -366,7 +366,7 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 11 vni 10011
    vxlan vlan 12 vni 10012
-   vxlan vrf VRF_A vni 10
+   vxlan vrf CUSTOMER_VRF vni 10
 ```
 
 ## Routing
@@ -400,14 +400,14 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| VRF_A | True |
+| CUSTOMER_VRF | True |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf VRF_A
+ip routing vrf CUSTOMER_VRF
 ```
 
 ### IPv6 Routing
@@ -417,8 +417,8 @@ ip routing vrf VRF_A
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| CUSTOMER_VRF | false |
 | default | false |
-| VRF_A | false |
 
 ### Static Routes
 
@@ -500,7 +500,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| VRF_A | 10.1.1.8:10 | connected | - |
+| CUSTOMER_VRF | 10.1.1.8:10 | connected | - |
 
 #### Router BGP Device Configuration
 
@@ -551,7 +551,7 @@ router bgp 65006
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
    !
-   vrf VRF_A
+   vrf CUSTOMER_VRF
       rd 10.1.1.8:10
       route-target import evpn 10:10
       route-target export evpn 10:10
@@ -638,13 +638,13 @@ route-map RM-CONN-2-BGP permit 10
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| VRF_A | enabled |
+| CUSTOMER_VRF | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
-vrf instance VRF_A
+vrf instance CUSTOMER_VRF
 ```
 
 ## EOS CLI Device Configuration

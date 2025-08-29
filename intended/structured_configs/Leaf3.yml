@@ -265,7 +265,7 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
-  - name: VRF_A
+  - name: CUSTOMER_VRF
     rd: 10.1.1.5:10
     route_targets:
       import:
@@ -309,7 +309,7 @@ vlan_interfaces:
 - name: Vlan21
   description: VRF_A_VLAN_21
   shutdown: false
-  vrf: VRF_A
+  vrf: CUSTOMER_VRF
   ip_address_virtual: 10.10.21.254/24
   tenant: CUSTOMER_A
   tags:
@@ -317,15 +317,15 @@ vlan_interfaces:
 - name: Vlan22
   description: VRF_A_VLAN_22
   shutdown: false
-  vrf: VRF_A
+  vrf: CUSTOMER_VRF
   ip_address_virtual: 10.10.22.254/24
   tenant: CUSTOMER_A
   tags:
   - pod2
 - name: Vlan3009
-  description: MLAG_L3_VRF_VRF_A
+  description: MLAG_L3_VRF_CUSTOMER_VRF
   shutdown: false
-  vrf: VRF_A
+  vrf: CUSTOMER_VRF
   ip_address: 10.255.1.100/31
   mtu: 1500
   tenant: CUSTOMER_A
@@ -353,14 +353,14 @@ vlans:
   name: VRF_A_VLAN_22
   tenant: CUSTOMER_A
 - id: 3009
-  name: MLAG_L3_VRF_VRF_A
+  name: MLAG_L3_VRF_CUSTOMER_VRF
   trunk_groups:
   - MLAG
   tenant: CUSTOMER_A
 vrfs:
 - name: default
   ip_routing: false
-- name: VRF_A
+- name: CUSTOMER_VRF
   ip_routing: true
   tenant: CUSTOMER_A
 vxlan_interface:
@@ -376,5 +376,5 @@ vxlan_interface:
       - id: 22
         vni: 10022
       vrfs:
-      - name: VRF_A
+      - name: CUSTOMER_VRF
         vni: 10

@@ -6,7 +6,7 @@ tenants:
     mac_vrf_vni_base: 10000
     vrfs:
       # VRF definition
-      - name: VRF_A
+      - name: CUSTOMER_VRF
         # VRF VNI definition
         vrf_vni: 10
         # Enable VTEP Network diagnostics
