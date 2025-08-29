@@ -27,12 +27,14 @@ tenants:
             ip_address_virtual: 10.10.11.254/24
             tags:
               - pod1
+              - pod3
           - id: 12
             name: VRF_A_VLAN_12
             enabled: true
             ip_address_virtual: 10.10.12.254/24
             tags:
               - pod1
+              - pod3
           - id: 21
             name: VRF_A_VLAN_21
             enabled: true
@@ -45,16 +47,3 @@ tenants:
             ip_address_virtual: 10.10.22.254/24
             tags:
               - pod2
-          - id: 31
-            name: VRF_A_VLAN_31
-            enabled: true
-            ip_address_virtual: 10.10.31.254/24
-            tags:
-              - pod3
-          - id: 32
-            name: VRF_A_VLAN_32
-            enabled: true
-            ip_address_virtual: 10.10.32.254/24
-            tags:
-              - pod3
-

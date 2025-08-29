@@ -33,7 +33,7 @@ ethernet_interfaces:
   peer: Host-E
   peer_interface: Ethernet1
   peer_type: server
-  port_profile: Pod3_Host-E
+  port_profile: Pod1-3_Host-A-E
 - name: Ethernet6
   description: SERVER_Host-F_Ethernet1
   shutdown: false
@@ -43,7 +43,7 @@ ethernet_interfaces:
   peer: Host-F
   peer_interface: Ethernet1
   peer_type: server
-  port_profile: Pod3_Host-F
+  port_profile: Pod1-3_Host-B-F
 hostname: Leaf5
 ip_igmp_snooping:
   globally_enabled: true
@@ -93,7 +93,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: '31'
+      allowed_vlan: '11'
 - name: Port-Channel6
   description: EVPN_AA_PortChannel
   shutdown: false
@@ -106,7 +106,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: '32'
+      allowed_vlan: '12'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -177,20 +177,20 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
-  - id: 31
+  - id: 11
     tenant: CUSTOMER_A
-    rd: 10.1.1.7:10031
+    rd: 10.1.1.7:10011
     route_targets:
       both:
-      - 10031:10031
+      - 10011:10011
     redistribute_routes:
     - learned
-  - id: 32
+  - id: 12
     tenant: CUSTOMER_A
-    rd: 10.1.1.7:10032
+    rd: 10.1.1.7:10012
     route_targets:
       both:
-      - 10032:10032
+      - 10012:10012
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -228,21 +228,23 @@ static_routes:
   next_hop: 172.20.20.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
-- name: Vlan31
-  description: VRF_A_VLAN_31
+- name: Vlan11
+  description: VRF_A_VLAN_11
   shutdown: false
   vrf: VRF_A
-  ip_address_virtual: 10.10.31.254/24
+  ip_address_virtual: 10.10.11.254/24
   tenant: CUSTOMER_A
   tags:
+  - pod1
   - pod3
-- name: Vlan32
-  description: VRF_A_VLAN_32
+- name: Vlan12
+  description: VRF_A_VLAN_12
   shutdown: false
   vrf: VRF_A
-  ip_address_virtual: 10.10.32.254/24
+  ip_address_virtual: 10.10.12.254/24
   tenant: CUSTOMER_A
   tags:
+  - pod1
   - pod3
 vlan_internal_order:
   allocation: ascending
@@ -250,11 +252,11 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 31
-  name: VRF_A_VLAN_31
+- id: 11
+  name: VRF_A_VLAN_11
   tenant: CUSTOMER_A
-- id: 32
-  name: VRF_A_VLAN_32
+- id: 12
+  name: VRF_A_VLAN_12
   tenant: CUSTOMER_A
 vrfs:
 - name: default
@@ -269,10 +271,10 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 31
-        vni: 10031
-      - id: 32
-        vni: 10032
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
       vrfs:
       - name: VRF_A
         vni: 10

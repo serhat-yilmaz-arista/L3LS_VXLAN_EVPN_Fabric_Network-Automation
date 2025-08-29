@@ -51,7 +51,7 @@ ethernet_interfaces:
   peer: Host-A
   peer_interface: Ethernet1
   peer_type: server
-  port_profile: Pod1_Host-A
+  port_profile: Pod1-3_Host-A-E
 - name: Ethernet6
   description: SERVER_Host-B_Ethernet1
   shutdown: false
@@ -61,7 +61,7 @@ ethernet_interfaces:
   peer: Host-B
   peer_interface: Ethernet1
   peer_type: server
-  port_profile: Pod1_Host-B
+  port_profile: Pod1-3_Host-B-F
 hostname: Leaf1
 ip_igmp_snooping:
   globally_enabled: true
@@ -314,6 +314,7 @@ vlan_interfaces:
   tenant: CUSTOMER_A
   tags:
   - pod1
+  - pod3
 - name: Vlan12
   description: VRF_A_VLAN_12
   shutdown: false
@@ -322,6 +323,7 @@ vlan_interfaces:
   tenant: CUSTOMER_A
   tags:
   - pod1
+  - pod3
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF_A
   shutdown: false

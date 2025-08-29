@@ -1,23 +1,10 @@
 
-### Used VLANs will be decided (VLAN 10-20 or VLAN 11, 12, 21, 22, 31, 32)
-# ---
-# port_profiles:
-#   - profile: pod1_servers
-#     mode: trunk
-#     vlans: 11,12
-#   - profile: pod2_servers
-#     mode: trunk
-#     vlans: 21,22
-#   - profile: pod3_servers
-#     mode: trunk
-#     vlans: 31,32
-
 ---
 port_profiles:
-  - profile: Pod1_Host-A
+  - profile: Pod1-3_Host-A-E
     mode: trunk
     vlans: '11'
-  - profile: Pod1_Host-B
+  - profile: Pod1-3_Host-B-F
     mode: trunk
     vlans: '12'
   - profile: Pod2_Host-C
@@ -26,12 +13,6 @@ port_profiles:
   - profile: Pod2_Host-D
     mode: trunk
     vlans: '22'
-  - profile: Pod3_Host-E
-    mode: trunk
-    vlans: '31'
-  - profile: Pod3_Host-F
-    mode: trunk
-    vlans: '32'
 
 # Definition of connected endpoints in the fabric.
 servers:
@@ -44,7 +25,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf1, Leaf2]
         # VLANs that will be configured on these ports.
-        profile: Pod1_Host-A
+        profile: Pod1-3_Host-A-E
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -62,7 +43,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf1, Leaf2]
         # VLANs that will be configured on these ports.
-        profile: Pod1_Host-B
+        profile: Pod1-3_Host-B-F
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -116,7 +97,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf5, Leaf6]
         # VLANs that will be configured on these ports.
-        profile: Pod3_Host-E
+        profile: Pod1-3_Host-A-E
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.
@@ -136,7 +117,7 @@ servers:
         # Switch names where the server ports are connected.
         switches: [Leaf5, Leaf6]
         # VLANs that will be configured on these ports.
-        profile: Pod3_Host-F
+        profile: Pod1-3_Host-B-F
         # L2 mode of the port.
         mode: trunk
         # Spanning tree portfast configuration on this port.

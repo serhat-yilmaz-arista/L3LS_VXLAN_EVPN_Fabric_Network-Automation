@@ -152,18 +152,18 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 31 | VRF_A_VLAN_31 | - |
-| 32 | VRF_A_VLAN_32 | - |
+| 11 | VRF_A_VLAN_11 | - |
+| 12 | VRF_A_VLAN_12 | - |
 
 ### VLANs Device Configuration
 
 ```eos
 !
-vlan 31
-   name VRF_A_VLAN_31
+vlan 11
+   name VRF_A_VLAN_11
 !
-vlan 32
-   name VRF_A_VLAN_32
+vlan 12
+   name VRF_A_VLAN_12
 ```
 
 ## Interfaces
@@ -176,8 +176,8 @@ vlan 32
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | SERVER_Host-E_Ethernet2 | *trunk | *31 | *- | *- | 5 |
-| Ethernet6 | SERVER_Host-F_Ethernet2 | *trunk | *32 | *- | *- | 6 |
+| Ethernet5 | SERVER_Host-E_Ethernet2 | *trunk | *11 | *- | *- | 5 |
+| Ethernet6 | SERVER_Host-F_Ethernet2 | *trunk | *12 | *- | *- | 6 |
 
 *Inherited from Port-Channel Interface
 
@@ -225,8 +225,8 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | EVPN_AA_PortChannel | trunk | 31 | - | - | - | - | - | 0000:0000:0000:0000:0001 |
-| Port-Channel6 | EVPN_AA_PortChannel | trunk | 32 | - | - | - | - | - | 0000:0000:0000:0000:0002 |
+| Port-Channel5 | EVPN_AA_PortChannel | trunk | 11 | - | - | - | - | - | 0000:0000:0000:0000:0001 |
+| Port-Channel6 | EVPN_AA_PortChannel | trunk | 12 | - | - | - | - | - | 0000:0000:0000:0000:0002 |
 
 ##### EVPN Multihoming
 
@@ -244,7 +244,7 @@ interface Ethernet6
 interface Port-Channel5
    description EVPN_AA_PortChannel
    no shutdown
-   switchport trunk allowed vlan 31
+   switchport trunk allowed vlan 11
    switchport mode trunk
    switchport
    !
@@ -257,7 +257,7 @@ interface Port-Channel5
 interface Port-Channel6
    description EVPN_AA_PortChannel
    no shutdown
-   switchport trunk allowed vlan 32
+   switchport trunk allowed vlan 12
    switchport mode trunk
    switchport
    !
@@ -307,31 +307,31 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan31 | VRF_A_VLAN_31 | VRF_A | - | False |
-| Vlan32 | VRF_A_VLAN_32 | VRF_A | - | False |
+| Vlan11 | VRF_A_VLAN_11 | VRF_A | - | False |
+| Vlan12 | VRF_A_VLAN_12 | VRF_A | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan31 |  VRF_A  |  -  |  10.10.31.254/24  |  -  |  -  |  -  |
-| Vlan32 |  VRF_A  |  -  |  10.10.32.254/24  |  -  |  -  |  -  |
+| Vlan11 |  VRF_A  |  -  |  10.10.11.254/24  |  -  |  -  |  -  |
+| Vlan12 |  VRF_A  |  -  |  10.10.12.254/24  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan31
-   description VRF_A_VLAN_31
+interface Vlan11
+   description VRF_A_VLAN_11
    no shutdown
    vrf VRF_A
-   ip address virtual 10.10.31.254/24
+   ip address virtual 10.10.11.254/24
 !
-interface Vlan32
-   description VRF_A_VLAN_32
+interface Vlan12
+   description VRF_A_VLAN_12
    no shutdown
    vrf VRF_A
-   ip address virtual 10.10.32.254/24
+   ip address virtual 10.10.12.254/24
 ```
 
 ### VXLAN Interface
@@ -347,8 +347,8 @@ interface Vlan32
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
-| 31 | 10031 | - | - |
-| 32 | 10032 | - | - |
+| 11 | 10011 | - | - |
+| 12 | 10012 | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 
@@ -364,8 +364,8 @@ interface Vxlan1
    description Leaf6_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
-   vxlan vlan 31 vni 10031
-   vxlan vlan 32 vni 10032
+   vxlan vlan 11 vni 10011
+   vxlan vlan 12 vni 10012
    vxlan vrf VRF_A vni 10
 ```
 
@@ -493,8 +493,8 @@ ASN Notation: asplain
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 31 | 10.1.1.8:10031 | 10031:10031 | - | - | learned |
-| 32 | 10.1.1.8:10032 | 10032:10032 | - | - | learned |
+| 11 | 10.1.1.8:10011 | 10011:10011 | - | - | learned |
+| 12 | 10.1.1.8:10012 | 10012:10012 | - | - | learned |
 
 #### Router BGP VRFs
 
@@ -534,14 +534,14 @@ router bgp 65006
    neighbor 10.255.255.22 description Spine2_Ethernet6
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan 31
-      rd 10.1.1.8:10031
-      route-target both 10031:10031
+   vlan 11
+      rd 10.1.1.8:10011
+      route-target both 10011:10011
       redistribute learned
    !
-   vlan 32
-      rd 10.1.1.8:10032
-      route-target both 10032:10032
+   vlan 12
+      rd 10.1.1.8:10012
+      route-target both 10012:10012
       redistribute learned
    !
    address-family evpn
