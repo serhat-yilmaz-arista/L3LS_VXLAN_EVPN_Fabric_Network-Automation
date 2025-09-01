@@ -15,11 +15,13 @@
     - name: Run ping tests from {{ inventory_hostname }}
       eos_command:
         commands:
-          - "ping {{ item.value }}"
+          - "ping {{ item.value }} repeat 1"
       loop: "{{ hosts_ips|dict2items|rejectattr('key', 'equalto', inventory_hostname)|list }}"
       loop_control:
         label: "{{ item.value }}"
       register: ping_results
+      delay: 1
+      retries: 1
 
     - name: Print formatted results for {{ inventory_hostname }}
       debug:
