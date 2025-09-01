@@ -82,4 +82,10 @@ interface Vlan{{ vlan.id }}
 !
 ip routing
 !
+{% for vlan in h.vlans %}
+{%     for pfx in h.static_routes %}
+ip route {{ pfx }} {{ vlan.gateway }}
+{%     endfor %}
+{% endfor %}
+!
 end
