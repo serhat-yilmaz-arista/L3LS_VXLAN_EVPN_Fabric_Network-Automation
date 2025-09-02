@@ -12,7 +12,7 @@ ansible_become_method: enable
 # Common AVD group variables
 fabric_name: FABRIC
 
-# p2p unlinks mtu for cEOS
+# Point-to-Point uplinks mtu for cEOS
 p2p_uplinks_mtu: 1500
 
 # Local user configuration
@@ -112,7 +112,7 @@ l3leaf:
     mlag_interfaces:
       - Ethernet3
       - Ethernet4
-    # Definition of pool of IPs to be used in P2P links
+    # Definition of pool of IPs to be used in Point-to-Point links
     uplink_ipv4_pool: 10.255.255.0/26
     # Definition of pool of IPs to be used for MLAG peer-link connectivity
     mlag_peer_ipv4_pool: 10.255.1.64/27
